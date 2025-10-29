@@ -32,6 +32,13 @@ const projects = [
     description: 'Android app for visually impaired users; shape detection with TTS & vibration feedback.',
     tech: ['Java', 'Android', 'Computer Vision'],
     link: ''
+  },
+  {
+    id: 3,
+    title: 'Portfolio Website',
+    description: 'Full-stack portfolio website with contact form and MongoDB integration. Built with React, Node.js, and Tailwind CSS.',
+    tech: ['React', 'Node.js', 'MongoDB', 'Tailwind CSS'],
+    link: 'https://github.com/Jeffrey-code270/Projects'
   }
 ]
 
