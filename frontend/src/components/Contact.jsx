@@ -13,7 +13,8 @@ export default function Contact() {
     e.preventDefault()
     setStatus('sending')
     try {
-      const res = await axios.post('/api/contact', form)
+      const apiUrl = import.meta.env.VITE_API_URL || '/api'
+      const res = await axios.post(`${apiUrl}/contact`, form)
       if (res.status === 200) {
         setStatus('sent')
         setForm({ name: '', email: '', message: '' })

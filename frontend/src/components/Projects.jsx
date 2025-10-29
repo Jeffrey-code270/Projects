@@ -20,7 +20,8 @@ export default function Projects() {
 
   useEffect(() => {
     let mounted = true
-    axios.get('/api/projects')
+    const apiUrl = import.meta.env.VITE_API_URL || '/api'
+    axios.get(`${apiUrl}/projects`)
       .then(res => {
         if (!mounted) return
         setProjects(res.data)
