@@ -1,13 +1,15 @@
 # app/process_pdfs.py
-import  nltk
+import nltk
 import os
 import fitz  # PyMuPDF
 import psycopg2
 import re
+import time
 from collections import Counter
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from dotenv import load_dotenv
+from monitoring import MetricsCollector, monitor_performance, logger
 
 # Load environment variables from .env file
 load_dotenv()
@@ -76,24 +78,48 @@ def store_results(conn, pdf_name, keywords):
 
 
 # --- Main Execution ---
+@monitor_performance
 def main():
     """Main function to orchestrate the PDF processing pipeline."""
-    print("Starting document processing pipeline...")
-    conn = get_db_connection()
-
-    for filename in os.listdir(PDF_DIRECTORY):
-        if filename.lower().endswith(".pdf"):
+    metrics = MetricsCollector()
+    logger.info("Starting document processing pipeline...")
+    
+    try:
+        conn = get_db_connection()
+        pdf_files = [f for f in os.listdir(PDF_DIRECTORY) if f.lower().endswith(".pdf")]
+        
+        if not pdf_files:
+            logger.warning("No PDF files found in directory")
+            return
+        
+        for filename in pdf_files:
+            start_time = time.time()
             pdf_path = os.path.join(PDF_DIRECTORY, filename)
-            print(f"Processing {filename}...")
+            logger.info(f"Processing {filename}...")
 
-            raw_text = extract_text_from_pdf(pdf_path)
-            if raw_text:
-                cleaned_tokens = clean_text(raw_text)
-                keywords = get_keyword_frequency(cleaned_tokens)
-                store_results(conn, filename, keywords)
+            try:
+                raw_text = extract_text_from_pdf(pdf_path)
+                if raw_text:
+                    cleaned_tokens = clean_text(raw_text)
+                    keywords = get_keyword_frequency(cleaned_tokens)
+                    store_results(conn, filename, keywords)
+                    
+                    processing_time = time.time() - start_time
+                    metrics.log_pdf_processed(filename, processing_time, len(keywords))
+                else:
+                    metrics.log_error(f"Failed to extract text from {filename}")
+            except Exception as e:
+                metrics.log_error(f"Error processing {filename}: {str(e)}")
 
-    conn.close()
-    print("Pipeline finished.")
+        conn.close()
+        
+        # Export metrics
+        final_metrics = metrics.export_metrics()
+        logger.info(f"Pipeline finished. Processed {final_metrics['pdfs_processed']} files")
+        
+    except Exception as e:
+        logger.error(f"Pipeline failed: {str(e)}")
+        raise
 
 if __name__ == "__main__":
     main()
