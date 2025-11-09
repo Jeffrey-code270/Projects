@@ -1,33 +1,23 @@
 # Jeffrey Code Portfolio
 
-## PDF Analysis DevOps Project
+This repository contains multiple projects showcasing different technologies and skills.
 
-This project processes PDF documents to extract and analyze keyword frequencies, storing results in a PostgreSQL database.
+## Projects
 
-### Setup
+### 1. PDF Analysis DevOps Project
+**Location:** `pdf-analysis-project/`
 
-1. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   python setup.py
-   ```
+A DevOps project that processes PDF documents to extract and analyze keyword frequencies, storing results in a PostgreSQL database.
 
-2. **Start services with Docker:**
-   ```bash
-   docker-compose up -d
-   ```
+**Technologies:** Python, PostgreSQL, Docker, NLTK
 
-3. **Add PDF files to the `data/` directory**
+### 2. Web Application
+**Location:** `frontend/` and `backend/`
 
-4. **Run the processing pipeline:**
-   ```bash
-   python app/process_pdfs.py
-   ```
+A full-stack web application with React frontend and Node.js backend.
 
-### Project Structure
+**Technologies:** React, Node.js, Express, MongoDB
 
-- `app/process_pdfs.py` - Main processing script
-- `data/` - Directory for PDF files
-- `scripts/init.sql` - Database schema
-- `docker-compose.yml` - Container orchestration
-- `.env` - Environment configuration
+## Getting Started
+
+Each project has its own README with specific setup instructions. Navigate to the respective project folder for detailed information.
