@@ -1,0 +1,13 @@
+*.db
+*.sqlite
+*.sqlite3
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv/
+venv/
+.DS_Store
+data/*.pdf
+nltk_data/

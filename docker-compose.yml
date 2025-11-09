@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: pdf_analysis
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    depends_on:
+      - postgres
+    volumes:
+      - ./data:/app/data
+      - ./app:/app/app
+    environment:
+      - PDF_DIRECTORY=/app/data
+      - DB_HOST=postgres
+      - DB_NAME=pdf_analysis
+      - DB_USER=postgres
+      - DB_PASSWORD=password
+
+volumes:
+  postgres_data:
