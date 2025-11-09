@@ -1,6 +1,14 @@
-# Jeffrey Code Portfolio
+# DevOps & Full-Stack Developer Portfolio
 
-This repository contains multiple projects showcasing different technologies and skills.
+[![DevOps](https://img.shields.io/badge/DevOps-CI%2FCD-blue)](https://github.com/Jeffrey-code270/Projects)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-blue)](https://github.com/Jeffrey-code270/Projects)
+[![AWS](https://img.shields.io/badge/AWS-Cloud%20Deployed-orange)](https://github.com/Jeffrey-code270/Projects)
+[![Python](https://img.shields.io/badge/Python-Data%20Processing-green)](https://github.com/Jeffrey-code270/Projects)
+[![React](https://img.shields.io/badge/React-Frontend-61DAFB)](https://github.com/Jeffrey-code270/Projects)
+
+**Keywords:** DevOps, CI/CD, Docker, AWS, Python, React, Full-Stack, Automation, Monitoring, PostgreSQL, GitHub Actions
+
+This repository showcases professional DevOps and full-stack development projects with modern technologies and best practices.
 
 ## Projects
 

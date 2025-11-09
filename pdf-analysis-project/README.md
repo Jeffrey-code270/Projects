@@ -1,32 +1,89 @@
-# Automated Document Processing Pipeline
+# 🚀 DevOps PDF Processing Pipeline | CI/CD | Docker | AWS
 
-Built an automated document processing pipeline that extracts and cleans text from PDFs, analyzes keyword frequency, and stores results in a PostgreSQL database. Containerized with Docker, integrated with GitHub for version control, and deployed to AWS EC2 via a CI/CD pipeline using GitHub Actions. Configured and monitored the Linux server to ensure continuous availability.
+[![DevOps](https://img.shields.io/badge/DevOps-CI%2FCD%20Pipeline-blue)](https://github.com/Jeffrey-code270/Projects)
+[![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED)](https://github.com/Jeffrey-code270/Projects)
+[![AWS](https://img.shields.io/badge/AWS-EC2%20Deployed-FF9900)](https://github.com/Jeffrey-code270/Projects)
+[![Python](https://img.shields.io/badge/Python-3.9+-3776AB)](https://github.com/Jeffrey-code270/Projects)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-336791)](https://github.com/Jeffrey-code270/Projects)
 
-## 🚀 Features
+> **Enterprise-grade automated document processing pipeline with full DevOps implementation**
 
-- **Automated PDF Processing**: Extract and clean text from PDF documents
-- **Keyword Analysis**: Frequency analysis with NLTK
-- **Database Storage**: PostgreSQL with conflict resolution
-- **Containerization**: Docker and Docker Compose
-- **CI/CD Pipeline**: GitHub Actions for automated deployment
-- **AWS Deployment**: EC2 with monitoring and health checks
-- **Production Ready**: Nginx reverse proxy, SSL support
+## 🎯 Project Overview
 
-## 🛠 Technologies
+**Professional DevOps project** demonstrating automated PDF document processing with keyword extraction, database storage, containerization, CI/CD pipeline, and AWS cloud deployment.
 
-- **Backend**: Python, PostgreSQL, NLTK
-- **DevOps**: Docker, GitHub Actions, AWS EC2
-- **Infrastructure**: Nginx, Linux server management
-- **Monitoring**: Health checks, logging, system monitoring
+**Perfect for:** DevOps Engineers, Cloud Engineers, Backend Developers, Data Engineers
 
-## 📋 Setup
+## ⚡ Quick Start
 
-### Local Development
 ```bash
-# Clone repository
 git clone https://github.com/Jeffrey-code270/Projects.git
 cd Projects/pdf-analysis-project
+./run.sh      # Process PDFs
+./report.sh   # View results
+./dashboard.sh # Web dashboard
+./stop.sh     # Stop services
+```
 
+## 🛠 DevOps Technologies
+
+| Category | Technologies |
+|----------|-------------|
+| **CI/CD** | GitHub Actions, Automated Testing, Deployment |
+| **Containerization** | Docker, Docker Compose |
+| **Cloud** | AWS EC2, Linux Server Management |
+| **Database** | PostgreSQL, SQLite |
+| **Monitoring** | Health Checks, Dashboards, Alerting |
+| **Languages** | Python, Bash, YAML |
+
+## 🏗 Architecture
+
+```
+GitHub → GitHub Actions → Docker Build → AWS EC2 → Monitoring
+   ↓           ↓              ↓           ↓          ↓
+ Code Push → Auto Test → Containerize → Deploy → Health Check
+```
+
+## 📊 Features
+
+- ✅ **Automated PDF Processing** - Extract and analyze text from documents
+- ✅ **CI/CD Pipeline** - GitHub Actions for automated deployment
+- ✅ **Containerization** - Docker and Docker Compose
+- ✅ **Cloud Deployment** - AWS EC2 with automated setup
+- ✅ **Database Integration** - PostgreSQL with conflict resolution
+- ✅ **Monitoring & Alerting** - Health checks and dashboards
+- ✅ **Web Dashboard** - Real-time monitoring interface
+
+## 🚀 DevOps Pipeline
+
+### 1. Continuous Integration
+```yaml
+# Automated on every push
+- Code quality checks
+- Dependency installation  
+- Unit testing
+- Docker image building
+```
+
+### 2. Continuous Deployment
+```yaml
+# Automated deployment to AWS
+- SSH to EC2 instance
+- Pull latest code
+- Rebuild containers
+- Health verification
+```
+
+## 📈 Monitoring
+
+- **System Metrics**: CPU, Memory, Disk usage
+- **Application Health**: Processing status, error rates
+- **Database Monitoring**: Connection health, query performance
+- **Automated Alerts**: Threshold-based notifications
+
+## 🔧 Local Development
+
+```bash
 # Install dependencies
 pip install -r requirements.txt
 python setup.py
@@ -34,68 +91,51 @@ python setup.py
 # Start services
 docker-compose up -d
 
-# Run pipeline
+# Run processing
 python app/process_pdfs.py
 ```
 
-### AWS EC2 Deployment
+## 🌐 Production Deployment
+
 ```bash
-# Run setup script on EC2 instance
+# AWS EC2 Setup
 bash deployment/ec2-setup.sh
 
-# Configure environment
-cp .env.example .env
-# Edit .env with production values
+# Configure monitoring
+bash deployment/setup-monitoring.sh
 
-# Deploy with CI/CD
-git push origin main  # Triggers GitHub Actions
+# Deploy via CI/CD
+git push origin main  # Triggers automated deployment
 ```
 
-## 🏗 Architecture
-
-```
-┌─────────────────┐    ┌──────────────┐    ┌─────────────────┐
-│   GitHub Repo   │───▶│ GitHub Actions│───▶│   AWS EC2      │
-└─────────────────┘    └──────────────┘    └─────────────────┘
-                                                     │
-┌─────────────────┐    ┌──────────────┐    ┌─────────────────┐
-│     Nginx       │◀───│    Docker    │◀───│  Python App    │
-│  (Reverse Proxy)│    │  Containers  │    │ (PDF Processing)│
-└─────────────────┘    └──────────────┘    └─────────────────┘
-                                                     │
-                       ┌──────────────┐    ┌─────────────────┐
-                       │ Health Checks│    │   PostgreSQL   │
-                       │ & Monitoring │    │   Database     │
-                       └──────────────┘    └─────────────────┘
-```
-
-## 📁 Project Structure
+## 📋 Project Structure
 
 ```
 pdf-analysis-project/
 ├── .github/workflows/     # CI/CD pipeline
-├── app/                   # Application code
-│   ├── process_pdfs.py   # Main processing script
-│   └── health_check.py   # System monitoring
+├── app/                   # Python application
 ├── deployment/            # AWS deployment scripts
 ├── data/                  # PDF files
 ├── scripts/              # Database scripts
-├── docker-compose.yml    # Container orchestration
-├── Dockerfile            # Application container
-└── README.md             # Documentation
+├── run.sh                # Quick start script
+├── report.sh             # View results
+├── dashboard.sh          # Web interface
+└── stop.sh               # Stop services
 ```
 
-## 🔧 CI/CD Pipeline
+## 🎓 Learning Outcomes
 
-1. **Code Push** → GitHub repository
-2. **Automated Testing** → GitHub Actions
-3. **Build & Deploy** → AWS EC2 instance
-4. **Health Monitoring** → Continuous availability
+This project demonstrates:
+- **DevOps Practices**: CI/CD, Infrastructure as Code
+- **Cloud Engineering**: AWS deployment, server management
+- **Containerization**: Docker best practices
+- **Monitoring**: System observability, alerting
+- **Automation**: End-to-end pipeline automation
 
-## 📊 Monitoring
+## 🏷 Keywords
 
-- Health check endpoints
-- Database connectivity monitoring
-- Disk space monitoring
-- Application logs
-- System resource monitoring
+`devops` `cicd` `docker` `aws` `python` `automation` `monitoring` `postgresql` `github-actions` `pdf-processing` `data-analysis` `containerization` `cloud-deployment` `nlp` `text-processing`
+
+---
+
+⭐ **Star this repository if you find it helpful for learning DevOps!**
