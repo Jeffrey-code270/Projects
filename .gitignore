@@ -1,3 +1,4 @@
+# Python
 *.db
 *.sqlite
 *.sqlite3
@@ -11,3 +12,8 @@ venv/
 .DS_Store
 data/*.pdf
 nltk_data/
+
+# Node.js
+node_modules/
+backend.log
+*.log

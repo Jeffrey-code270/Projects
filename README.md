@@ -1,8 +1,10 @@
-# PDF Analysis DevOps Project
+# Jeffrey Code Portfolio
+
+## PDF Analysis DevOps Project
 
 This project processes PDF documents to extract and analyze keyword frequencies, storing results in a PostgreSQL database.
 
-## Setup
+### Setup
 
 1. **Install dependencies:**
    ```bash
@@ -22,7 +24,7 @@ This project processes PDF documents to extract and analyze keyword frequencies,
    python app/process_pdfs.py
    ```
 
-## Project Structure
+### Project Structure
 
 - `app/process_pdfs.py` - Main processing script
 - `data/` - Directory for PDF files
