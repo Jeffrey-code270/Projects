@@ -9,7 +9,7 @@ from collections import Counter
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from dotenv import load_dotenv
-from monitoring import MetricsCollector, monitor_performance, logger
+# from monitoring import MetricsCollector, monitor_performance, logger
 
 # Load environment variables from .env file
 load_dotenv()
@@ -78,47 +78,56 @@ def store_results(conn, pdf_name, keywords):
 
 
 # --- Main Execution ---
-@monitor_performance
 def main():
     """Main function to orchestrate the PDF processing pipeline."""
-    metrics = MetricsCollector()
-    logger.info("Starting document processing pipeline...")
+    print("Starting document processing pipeline...")
     
     try:
-        conn = get_db_connection()
+        # Use SQLite for local demo
+        import sqlite3
+        conn = sqlite3.connect("pdf_analysis.db")
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS keyword_frequency (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                pdf_name TEXT NOT NULL,
+                keyword TEXT NOT NULL,
+                frequency INTEGER NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                UNIQUE(pdf_name, keyword)
+            )
+        ''')
+        
         pdf_files = [f for f in os.listdir(PDF_DIRECTORY) if f.lower().endswith(".pdf")]
         
         if not pdf_files:
-            logger.warning("No PDF files found in directory")
+            print("No PDF files found in directory")
             return
         
         for filename in pdf_files:
-            start_time = time.time()
             pdf_path = os.path.join(PDF_DIRECTORY, filename)
-            logger.info(f"Processing {filename}...")
+            print(f"Processing {filename}...")
 
-            try:
-                raw_text = extract_text_from_pdf(pdf_path)
-                if raw_text:
-                    cleaned_tokens = clean_text(raw_text)
-                    keywords = get_keyword_frequency(cleaned_tokens)
-                    store_results(conn, filename, keywords)
-                    
-                    processing_time = time.time() - start_time
-                    metrics.log_pdf_processed(filename, processing_time, len(keywords))
-                else:
-                    metrics.log_error(f"Failed to extract text from {filename}")
-            except Exception as e:
-                metrics.log_error(f"Error processing {filename}: {str(e)}")
+            raw_text = extract_text_from_pdf(pdf_path)
+            if raw_text:
+                cleaned_tokens = clean_text(raw_text)
+                keywords = get_keyword_frequency(cleaned_tokens)
+                
+                # Store in SQLite
+                for keyword, frequency in keywords:
+                    cursor.execute('''
+                        INSERT OR REPLACE INTO keyword_frequency (pdf_name, keyword, frequency)
+                        VALUES (?, ?, ?)
+                    ''', (filename, keyword, frequency))
+                
+                print(f"Successfully stored {len(keywords)} keywords for {filename}")
 
+        conn.commit()
         conn.close()
-        
-        # Export metrics
-        final_metrics = metrics.export_metrics()
-        logger.info(f"Pipeline finished. Processed {final_metrics['pdfs_processed']} files")
+        print("Pipeline finished successfully!")
         
     except Exception as e:
-        logger.error(f"Pipeline failed: {str(e)}")
+        print(f"Pipeline failed: {str(e)}")
         raise
 
 if __name__ == "__main__":
