@@ -2,14 +2,16 @@ import React from 'react'
 
 export default function Nav() {
   return (
-    <header className="bg-white shadow-sm">
+    <header className="bg-gray-800 border-b border-gray-700 sticky top-0 z-50 backdrop-blur-sm">
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="text-2xl font-semibold">Jeffrin</div>
-        <nav className="space-x-4 text-sm text-gray-700">
-          <a href="#about" className="hover:underline">About</a>
-          <a href="#projects" className="hover:underline">Projects</a>
-          <a href="#contact" className="hover:underline">Contact</a>
-          <a href="/resume.pdf" target="_blank" rel="noreferrer" className="ml-4 inline-block bg-blue-600 text-white px-3 py-1 rounded">Resume</a>
+        <div className="text-2xl font-bold gradient-text">Jeffrey</div>
+        <nav className="flex items-center space-x-6 text-sm">
+          <a href="#about" className="text-gray-300 hover:text-blue-400 transition-colors duration-300">About</a>
+          <a href="#projects" className="text-gray-300 hover:text-blue-400 transition-colors duration-300">Projects</a>
+          <a href="#contact" className="text-gray-300 hover:text-blue-400 transition-colors duration-300">Contact</a>
+          <a href="/resume.pdf" target="_blank" rel="noreferrer" className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transition-all duration-300">
+            Resume
+          </a>
         </nav>
       </div>
     </header>
