@@ -39,6 +39,11 @@ class EmailServiceHandler(BaseHTTPRequestHandler):
                     print(f"Booking confirmation for {data.get('patient_name')}")
                     print(f"Doctor: Dr. {data.get('doctor_name')}")
                     print(f"Date: {data.get('date')} at {data.get('time')}")
+                elif action == 'BOOKING_CANCELLATION':
+                    print(f"Booking cancellation for {data.get('patient_name')}")
+                    print(f"Doctor: Dr. {data.get('doctor_name')}")
+                    print(f"Date: {data.get('date')} at {data.get('time')}")
+                    print(f"Reason: Doctor cancelled the appointment")
                 
                 # Send success response
                 self.send_response(200)

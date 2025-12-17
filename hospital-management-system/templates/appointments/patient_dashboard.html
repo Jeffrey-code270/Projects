@@ -23,12 +23,12 @@
                     {% for doctor in doctors|slice:":3" %}
                     <div class="card mb-3">
                         <div class="card-body">
-                            <h5 class="card-title">Dr. {{ doctor.doctor__username }}</h5>
-                            {% if doctor.doctor__doctorprofile__specialty__name %}
-                                <p class="text-muted mb-2">{{ doctor.doctor__doctorprofile__specialty__name }}</p>
+                            <h5 class="card-title">Dr. {{ doctor.username }}</h5>
+                            {% if doctor.doctorprofile__specialty__name %}
+                                <p class="text-muted mb-2">{{ doctor.doctorprofile__specialty__name }}</p>
                             {% endif %}
-                            <p class="text-success mb-3">${{ doctor.doctor__doctorprofile__consultation_fee|default:"100.00" }} per consultation</p>
-                            <button class="btn btn-primary btn-sm" onclick="loadDoctorSlots({{ doctor.doctor__id }}, '{{ doctor.doctor__username }}')">
+                            <p class="text-success mb-3">${{ doctor.doctorprofile__consultation_fee|default:"100.00" }} per consultation</p>
+                            <button class="btn btn-primary btn-sm" onclick="loadDoctorSlots({{ doctor.id }}, '{{ doctor.username }}')">
                                 View Available Slots
                             </button>
                         </div>

@@ -44,6 +44,22 @@ def send_email(event, context):
             <p>Best regards,<br>HMS Team</p>
             """
         
+        elif action == 'BOOKING_CANCELLATION':
+            subject = 'Appointment Cancelled'
+            html_content = f"""
+            <h2>Appointment Cancelled</h2>
+            <p>Hello {body.get('patient_name', 'Patient')},</p>
+            <p>We regret to inform you that your appointment has been cancelled:</p>
+            <ul>
+                <li><strong>Doctor:</strong> Dr. {body.get('doctor_name', 'N/A')}</li>
+                <li><strong>Date:</strong> {body.get('date', 'N/A')}</li>
+                <li><strong>Time:</strong> {body.get('time', 'N/A')}</li>
+            </ul>
+            <p>Please book a new appointment at your convenience.</p>
+            <p>We apologize for any inconvenience caused.</p>
+            <p>Best regards,<br>HMS Team</p>
+            """
+        
         else:
             return {
                 'statusCode': 400,

@@ -42,16 +42,21 @@ def dashboard(request):
         # Get or create patient profile
         profile, created = PatientProfile.objects.get_or_create(user=request.user)
         
-        # Get doctors with available slots
-        available_doctors = Availability.objects.filter(
-            is_booked=False,
+        # Get all doctors who have any slots (available or not)
+        from accounts.models import User
+        doctor_ids = Availability.objects.filter(
             date__gte=timezone.now().date()
-        ).select_related('doctor__doctorprofile__specialty').values(
-            'doctor__username', 
-            'doctor__id',
-            'doctor__doctorprofile__specialty__name',
-            'doctor__doctorprofile__consultation_fee'
-        ).distinct()
+        ).values_list('doctor_id', flat=True).distinct()
+        
+        available_doctors = User.objects.filter(
+            id__in=doctor_ids,
+            user_type='doctor'
+        ).select_related('doctorprofile__specialty').values(
+            'username', 
+            'id',
+            'doctorprofile__specialty__name',
+            'doctorprofile__consultation_fee'
+        )
         
         # Patient's bookings
         my_bookings = Booking.objects.filter(patient=request.user).order_by('-booked_at')
@@ -212,15 +217,32 @@ def cancel_booking(request, booking_id):
         messages.error(request, "Cannot cancel this booking.")
         return redirect('appointments:dashboard')
     
-    # Cancel booking
-    booking.status = 'cancelled'
-    booking.save()
+    with transaction.atomic():
+        # Cancel booking
+        booking.status = 'cancelled'
+        booking.save()
+        
+        # Free up the slot
+        availability = Availability.objects.select_for_update().get(id=booking.availability.id)
+        availability.is_booked = False
+        availability.save()
     
-    # Free up the slot
-    booking.availability.is_booked = False
-    booking.availability.save()
+    # Send cancellation email to patient if doctor cancelled
+    if request.user == booking.availability.doctor:
+        try:
+            email_data = {
+                'action': 'BOOKING_CANCELLATION',
+                'to_email': booking.patient.email,
+                'patient_name': booking.patient.username,
+                'doctor_name': booking.availability.doctor.username,
+                'date': str(booking.availability.date),
+                'time': str(booking.availability.start_time)
+            }
+            requests.post(settings.EMAIL_SERVICE_URL, json=email_data, timeout=5)
+        except:
+            pass
     
-    messages.success(request, "Booking cancelled successfully!")
+    messages.success(request, "Booking cancelled successfully! Slot is now available for booking.")
     return redirect('appointments:dashboard')
 
 @login_required
