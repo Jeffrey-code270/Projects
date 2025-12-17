@@ -114,6 +114,11 @@ def book_appointment(request, availability_id):
                 messages.error(request, "This slot is no longer available.")
                 return redirect('appointments:dashboard')
             
+            # Check if booking already exists
+            if Booking.objects.filter(availability=availability).exists():
+                messages.error(request, "This slot has already been booked.")
+                return redirect('appointments:dashboard')
+            
             # Create booking
             booking = form.save(commit=False)
             booking.patient = request.user
