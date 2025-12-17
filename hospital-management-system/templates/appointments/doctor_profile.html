@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Doctor Profile - HMS{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3>Doctor Profile</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.specialty.id_for_label }}" class="form-label">Specialty</label>
+                                {{ form.specialty }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.license_number.id_for_label }}" class="form-label">License Number</label>
+                                {{ form.license_number }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.years_experience.id_for_label }}" class="form-label">Years of Experience</label>
+                                {{ form.years_experience }}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.consultation_fee.id_for_label }}" class="form-label">Consultation Fee ($)</label>
+                                {{ form.consultation_fee }}
+                            </div>
+                            <div class="mb-3">
+                                <label for="{{ form.bio.id_for_label }}" class="form-label">Bio</label>
+                                {{ form.bio }}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                    <a href="{% url 'appointments:dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
