@@ -4,8 +4,7 @@ from django.contrib import messages
 from django.db import transaction
 from django.http import JsonResponse
 from django.utils import timezone
-from django.db.models import Q
-from .models import Availability, Booking, DoctorProfile, PatientProfile, Specialty
+from .models import Availability, Booking, DoctorProfile, PatientProfile
 from .forms import AvailabilityForm, BookingForm, DoctorProfileForm, PatientProfileForm
 from .google_calendar import create_calendar_event
 import requests

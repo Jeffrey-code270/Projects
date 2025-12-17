@@ -1,88 +1,63 @@
 #!/usr/bin/env python3
-"""
-Demo script for Hospital Management System
-Creates sample data for demonstration
-"""
 import os
 import django
-import sys
 from datetime import datetime, timedelta
 
-# Setup Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'hms.settings')
 django.setup()
 
 from accounts.models import User
-from appointments.models import Availability
+from appointments.models import Availability, Specialty, DoctorProfile
 
 def create_demo_data():
-    print("Creating demo data for HMS...")
+    # Create specialties
+    cardiology, _ = Specialty.objects.get_or_create(name='Cardiology')
+    dermatology, _ = Specialty.objects.get_or_create(name='Dermatology')
+    neurology, _ = Specialty.objects.get_or_create(name='Neurology')
     
-    # Create a demo doctor
-    doctor, created = User.objects.get_or_create(
-        username='dr_smith',
-        defaults={
-            'email': 'dr.smith@hospital.com',
-            'user_type': 'doctor',
-            'first_name': 'John',
-            'last_name': 'Smith'
-        }
-    )
-    if created:
-        doctor.set_password('demo123')
-        doctor.save()
-        print("✅ Created demo doctor: dr_smith (password: demo123)")
+    # Create doctors
+    doctors_data = [
+        ('dr_smith', 'dr.smith@hospital.com', 'John', 'Smith', cardiology, 150.00),
+        ('dr_johnson', 'dr.johnson@hospital.com', 'Sarah', 'Johnson', dermatology, 120.00),
+        ('dr_williams', 'dr.williams@hospital.com', 'Michael', 'Williams', neurology, 200.00)
+    ]
     
-    # Create a demo patient
-    patient, created = User.objects.get_or_create(
-        username='patient_doe',
-        defaults={
-            'email': 'patient.doe@email.com',
-            'user_type': 'patient',
-            'first_name': 'Jane',
-            'last_name': 'Doe'
-        }
-    )
-    if created:
-        patient.set_password('demo123')
-        patient.save()
-        print("✅ Created demo patient: patient_doe (password: demo123)")
+    for username, email, first, last, specialty, fee in doctors_data:
+        doctor, created = User.objects.get_or_create(
+            username=username,
+            defaults={'email': email, 'user_type': 'doctor', 'first_name': first, 'last_name': last}
+        )
+        if created:
+            doctor.set_password('demo123')
+            doctor.save()
+        
+        DoctorProfile.objects.get_or_create(
+            user=doctor,
+            defaults={'specialty': specialty, 'consultation_fee': fee, 'license_number': f'MD{doctor.id}'}
+        )
     
-    # Create some availability slots for the doctor
+    # Create patients
+    for username, email in [('patient_doe', 'patient.doe@email.com'), ('patient_brown', 'patient.brown@email.com')]:
+        patient, created = User.objects.get_or_create(
+            username=username,
+            defaults={'email': email, 'user_type': 'patient'}
+        )
+        if created:
+            patient.set_password('demo123')
+            patient.save()
+    
+    # Create availability slots
     today = datetime.now().date()
+    for doctor in User.objects.filter(user_type='doctor'):
+        for i in range(1, 6):
+            date = today + timedelta(days=i)
+            for hour in [9, 10, 11, 14, 15, 16]:
+                Availability.objects.get_or_create(
+                    doctor=doctor, date=date, start_time=f"{hour}:00",
+                    defaults={'end_time': f"{hour}:30"}
+                )
     
-    # Create slots for next 5 days
-    for i in range(1, 6):
-        date = today + timedelta(days=i)
-        
-        # Morning slots
-        for hour in [9, 10, 11]:
-            availability, created = Availability.objects.get_or_create(
-                doctor=doctor,
-                date=date,
-                start_time=f"{hour}:00",
-                defaults={'end_time': f"{hour}:30"}
-            )
-            if created:
-                print(f"✅ Created availability: {date} {hour}:00-{hour}:30")
-        
-        # Afternoon slots
-        for hour in [14, 15, 16]:
-            availability, created = Availability.objects.get_or_create(
-                doctor=doctor,
-                date=date,
-                start_time=f"{hour}:00",
-                defaults={'end_time': f"{hour}:30"}
-            )
-            if created:
-                print(f"✅ Created availability: {date} {hour}:00-{hour}:30")
-    
-    print("\n🎉 Demo data created successfully!")
-    print("\nDemo Accounts:")
-    print("Doctor Login: dr_smith / demo123")
-    print("Patient Login: patient_doe / demo123")
-    print("\nStart the server with: python3 manage.py runserver")
-    print("Visit: http://localhost:8000")
+    print("Demo data created! Login: dr_smith/demo123, patient_doe/demo123")
 
 if __name__ == "__main__":
     create_demo_data()
