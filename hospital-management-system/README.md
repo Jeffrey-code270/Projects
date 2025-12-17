@@ -109,16 +109,6 @@ hms/
 - `POST /appointments/book/<id>/` - Book appointment (patients)
 - `GET /appointments/api/doctor/<id>/slots/` - Get doctor's available slots
 
-## Demo Video
-
-Create a 10-minute screen recording showcasing:
-1. User registration (doctor and patient)
-2. Doctor creating availability slots
-3. Patient booking appointments
-4. Email notifications working
-5. Calendar integration (if configured)
-6. Code walkthrough
-
 ## Development Notes
 
 - Uses SQLite for demo simplicity
