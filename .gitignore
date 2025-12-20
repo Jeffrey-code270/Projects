@@ -210,3 +210,15 @@ temp/
 # API Keys and secrets
 *.key
 secrets.json
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Data files
+data/*.pdf
+nltk_data/
+
+# Backend logs
+backend.log
